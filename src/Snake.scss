@@ -1,3 +1,38 @@
-.canvas {
-  border: 1px solid black;
+.snake-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.snake {
+  margin: 100px auto;
+  width: 40%;
+  &__canvas {
+    border: 5px solid #5c51b6;
+    margin: 0 auto;
+    display: block;
+  }
+
+  &__button {
+    display: block;
+    margin: 50px auto;
+    background: #2F80ED;
+    border: 1px solid;
+    border-radius: 3px;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:hover {
+      background: #0007ed;
+    }
+  }
+
+  &__div {
+    margin: 0 auto;
+    width: 267px;
+    color: red;
+    font-size: 43px;
+    font-weight: bold;
+  }
 }

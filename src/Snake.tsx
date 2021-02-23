@@ -7,21 +7,24 @@ function Snake() {
   const canvasRef: {current: any} = useRef();
   const [snake, setSnake] = useState(CommonConstants.SNAKE_START);
   const [apple, setApple] = useState(CommonConstants.APPLE_START);
-  const [dir, setDir] = useState([0,-1]);
+  const [dir, setDir] = useState([0,-0.5]);
   const [speed, setSpeed] = useState(CommonConstants.SPEED);
   const [gameOver, setGameOver] = useState(false);
+  const [isStartGame, setStartGame] = useState(false);
 
   function startGame(): void {
     setSnake(CommonConstants.SNAKE_START);
     setApple(CommonConstants.APPLE_START);
-    setDir([0, -1]);
+    setDir([0, -0.5]);
     setSpeed(CommonConstants.SPEED);
+    setStartGame(!isStartGame);
     setGameOver(false);
   }
 
   function endGame() {
     setSpeed(null);
     setGameOver(true);
+    setStartGame(false);
   }
 
   function moveSnake(e: React.KeyboardEvent<HTMLDivElement>) {
@@ -66,20 +69,22 @@ function Snake() {
   }
 
   function gameLoop() {
-    const snakeCopy: Array<Array<number>> = JSON.parse(JSON.stringify(snake));
-    const newSnakeHead: Array<number> = [snakeCopy[0][0] + dir[0], snakeCopy[0][1] + dir[1]];
+    if (isStartGame) {
+      const snakeCopy: Array<Array<number>> = JSON.parse(JSON.stringify(snake));
+      const newSnakeHead: Array<number> = [snakeCopy[0][0] + dir[0], snakeCopy[0][1] + dir[1]];
 
-    if( checkCollision(newSnakeHead) ) {
-      endGame();
+      if( checkCollision(newSnakeHead) ) {
+        endGame();
+      }
+
+      snakeCopy.unshift(newSnakeHead);
+
+      if (!checkAppleCollision(snakeCopy)) {
+        snakeCopy.pop();
+      }
+
+      setSnake(snakeCopy);
     }
-
-    snakeCopy.unshift(newSnakeHead);
-
-    if (!checkAppleCollision(snakeCopy)) {
-      snakeCopy.pop();
-    }
-
-    setSnake(snakeCopy);
   }
 
   useEffect(() => {
@@ -87,9 +92,9 @@ function Snake() {
     context.setTransform(CommonConstants.SCALE, 0, 0, CommonConstants.SCALE, 0, 0);
     context.clearRect(0, 0, CommonConstants.CANVAS_SIZE[0], CommonConstants.CANVAS_SIZE[1]);
     context.fillStyle = "lightGreen";
-    snake.forEach(([x,y]) => context.fillRect(x, y, 1 ,1 ));
+    snake.forEach(([x,y]) => context.fillRect(x, y, 0.5 ,0.5 ));
     context.fillStyle = "red";
-    context.fillRect(apple[0], apple[1], 1, 1);
+    context.fillRect(apple[0], apple[1], 0.5, 0.5);
   }, [snake, apple, gameOver]);
 
   useInterval( () => gameLoop(), speed);
@@ -97,12 +102,14 @@ function Snake() {
 
 
   return (
-    <div className="Snake" role="button" onKeyDown={moveSnake}>
-      <canvas className="canvas" ref={canvasRef}
-              width={`${CommonConstants.CANVAS_SIZE[0]}px`}
-              height={`${CommonConstants.CANVAS_SIZE[1]}px`}/>
-        {gameOver && <div>GAME OVER!</div>}
-        <button onClick={startGame}>Start Game</button>
+    <div className="snake-wrapper" role="button" onKeyDown={moveSnake}>
+      <div className="snake">
+        <canvas className="snake__canvas" ref={canvasRef}
+                width={`${CommonConstants.CANVAS_SIZE[0]}px`}
+                height={`${CommonConstants.CANVAS_SIZE[1]}px`}/>
+        {gameOver && <div className="snake__div">GAME OVER!</div>}
+        <button onClick={startGame} className="snake__button">{isStartGame ? 'Stop Game' : 'Start Game'}</button>
+      </div>
     </div>
   );
 }
