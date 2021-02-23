@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect} from 'react';
-import { useInterval } from "./useInterval";
-import { CommonConstants } from "./constants";
+import { useInterval } from "../../hooks/useInterval";
+import { CommonConstants } from "../../constants/constants";
 import './Snake.scss';
+import Footer from '../footer/footer';
+import SnakeSettings from '../snake-settings/snake-settings';
 
 function Snake() {
   const canvasRef: {current: any} = useRef();
@@ -21,13 +23,13 @@ function Snake() {
     setGameOver(false);
   }
 
-  function endGame() {
+  function endGame(): void {
     setSpeed(null);
     setGameOver(true);
     setStartGame(false);
   }
 
-  function moveSnake(e: React.KeyboardEvent<HTMLDivElement>) {
+  function moveSnake(e: React.KeyboardEvent<HTMLDivElement>): void {
     if ( e.which >= 37 && e.which <= 40) {
       setDir(CommonConstants.DIRECTIONS[e.which]);
     }
@@ -68,7 +70,7 @@ function Snake() {
     return false
   }
 
-  function gameLoop() {
+  function gameLoop(): void {
     if (isStartGame) {
       const snakeCopy: Array<Array<number>> = JSON.parse(JSON.stringify(snake));
       const newSnakeHead: Array<number> = [snakeCopy[0][0] + dir[0], snakeCopy[0][1] + dir[1]];
@@ -104,12 +106,14 @@ function Snake() {
   return (
     <div className="snake-wrapper" role="button" onKeyDown={moveSnake}>
       <div className="snake">
+        <SnakeSettings></SnakeSettings>
         <canvas className="snake__canvas" ref={canvasRef}
                 width={`${CommonConstants.CANVAS_SIZE[0]}px`}
                 height={`${CommonConstants.CANVAS_SIZE[1]}px`}/>
         {gameOver && <div className="snake__div">GAME OVER!</div>}
         <button onClick={startGame} className="snake__button">{isStartGame ? 'Stop Game' : 'Start Game'}</button>
       </div>
+      <Footer></Footer>
     </div>
   );
 }
