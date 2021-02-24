@@ -11,6 +11,11 @@ export abstract class CommonConstants {
         38: [0, -0.5],  //up
         40: [0, 0.5],   //down
         37: [-0.5, 0],  //left
-        39: [0.5, 0]    //right
+        39: [0.5, 0],    //right
+        87: [0, -0.5],  //up
+        83: [0, 0.5],   //down
+        65: [-0.5, 0],  //left
+        68: [0.5, 0],    //right
+
     };
 }

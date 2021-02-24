@@ -1,0 +1,17 @@
+.header{
+  display: flex;
+  justify-content: space-around;
+  margin: 50px auto;
+  &__title {
+    width: 20%;
+  }
+}
+.snake-settings {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+}
+
+.button-wrapper {
+  margin: 5px;
+}
