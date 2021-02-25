@@ -65,7 +65,7 @@ function Snake() {
       return true;
     }
 
-    for(let i = 2; i < snake.length; i++) {
+    for(let i = 0; i < snake.length; i++) {
       if(piece[0] === snake[i][0] && piece[1] === snake[i][1]) return true;
     }
 

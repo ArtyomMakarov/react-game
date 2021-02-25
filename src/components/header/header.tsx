@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './header.scss';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import SoundSettings from '../sound-settings/sound-settings';
 
 
 export interface IHederProps {
@@ -100,7 +101,7 @@ export default function Header(props: IHederProps) {
             </DropdownButton>
           </div>
       </div>
-
+      <SoundSettings></SoundSettings>
     </div>
   );
 }
