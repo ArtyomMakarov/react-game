@@ -24,6 +24,12 @@ export default function SoundSettings() {
     setSoundIsSwitchOn(!isSoundSwitchOn);
   };
 
+  const onMusicControlAction = () => {
+  };
+
+  const onSoundControlAction = () => {
+  };
+
   return (
     <div className="sound-settings">
       <Form>
@@ -45,11 +51,11 @@ export default function SoundSettings() {
         />
         <Form.Group controlId="formBasicRange">
           <Form.Label>Music Volume</Form.Label>
-          <Form.Control type="range" />
+          <Form.Control type="range" onChange={onMusicControlAction}/>
         </Form.Group>
         <Form.Group controlId="formBasicRange">
           <Form.Label>Sound Volume</Form.Label>
-          <Form.Control type="range" />
+          <Form.Control type="range" onChange={onSoundControlAction}/>
         </Form.Group>
       </Form>
     </div>
