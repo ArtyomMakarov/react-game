@@ -1,38 +1,55 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import './sound-settings.scss';
-import useSound from 'use-sound';
 import Form from 'react-bootstrap/Form';
-import FormCheck from 'react-bootstrap/FormCheck';
-// import snakeMusic from '../../assets/audio/snakeMusic.mp3';
+import useSound from 'use-sound';
+import snakeMusic from '../../assets/audio/snakeMusic.mp3';
 
-export default function SoundSettings() {
+
+export interface ISoundSettingsProps {
+  snakeSoundVolume: (level: number) =>void;
+  isSnakeSoundSwitch: (scale: boolean) => void;
+}
+
+export default function SoundSettings(props: ISoundSettingsProps) {
+
   const [isMusicSwitchOn, setMusicIsSwitchOn] = useState(false);
   const [isSoundSwitchOn, setSoundIsSwitchOn] = useState(false);
-
-  const audioTune = new Audio('<../../assets/audio/snakeMusic.mp3>');
+  const [snakeMusicVolume, setSnakeMusicVolume] = useState(0.5);
+  const [playSnakeMusic, snakeMusicOptions ] = useSound(
+    snakeMusic,
+    {
+      volume: snakeMusicVolume
+    }
+  );
 
   useEffect(() => {
-    audioTune.loop = true
-  });
+    isMusicSwitchOn ? playSnakeMusic() : snakeMusicOptions.pause();
+  },[isMusicSwitchOn]);
+
+  useEffect(() => {
+    props.isSnakeSoundSwitch(isSoundSwitchOn);
+  },[isSoundSwitchOn]);
+
 
   const onMusicSwitchAction = () => {
-    audioTune.play();
     setMusicIsSwitchOn(!isMusicSwitchOn);
+
   };
 
   const onSoundSwitchAction = () => {
     setSoundIsSwitchOn(!isSoundSwitchOn);
   };
 
-  const onMusicControlAction = () => {
+  const onMusicControlAction = (e: ChangeEvent<HTMLInputElement>) => {
+    setSnakeMusicVolume(+e.target.value);
   };
 
-  const onSoundControlAction = () => {
+  const onSoundControlAction = (e: ChangeEvent<HTMLInputElement>) => {
+    props.snakeSoundVolume(+e.target.value);
   };
 
   return (
     <div className="sound-settings">
-      <Form>
         <Form.Check
           type='checkbox'
           onChange={onMusicSwitchAction}
@@ -41,6 +58,10 @@ export default function SoundSettings() {
           label="Music On/Off"
           checked={isMusicSwitchOn}
         />
+        <Form.Group controlId="formBasicRange">
+          <Form.Label>Music Volume</Form.Label>
+          <Form.Control type="range" onChange={onMusicControlAction} min='0' max='1' step='0.1' />
+        </Form.Group>
         <Form.Check
           type='checkbox'
           onChange={onSoundSwitchAction}
@@ -50,15 +71,10 @@ export default function SoundSettings() {
           checked={isSoundSwitchOn}
         />
         <Form.Group controlId="formBasicRange">
-          <Form.Label>Music Volume</Form.Label>
-          <Form.Control type="range" onChange={onMusicControlAction}/>
-        </Form.Group>
-        <Form.Group controlId="formBasicRange">
           <Form.Label>Sound Volume</Form.Label>
-          <Form.Control type="range" onChange={onSoundControlAction}/>
+          <Form.Control type="range" onChange={onSoundControlAction} min='0' max='1' step='0.1'/>
         </Form.Group>
-      </Form>
-    </div>
+      </div>
   );
 }
 
