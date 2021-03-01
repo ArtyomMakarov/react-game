@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 import './header.scss';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Button from 'react-bootstrap/Button'
 
 
 
 export interface IHederProps {
   levelChange: (level: number) =>void;
   sizeChange: (scale: Array<number>) => void;
-  snakeSizeChange: (snakeSize: number) => void
+  snakeSizeChange: (snakeSize: number) => void;
+  isFullScreen: (fullScreen: boolean) => void;
 }
 
 
@@ -72,6 +74,10 @@ export default function Header(props: IHederProps) {
     }
   }
 
+  function handleFullScreenClick(e: React.MouseEvent<HTMLButtonElement>): void {
+    props.isFullScreen(true);
+  }
+
   return (
     <div className="header">
       <h1 className="header__title">Snake Game</h1>
@@ -99,6 +105,9 @@ export default function Header(props: IHederProps) {
               <Dropdown.Item href="#/action-2" onClick={handleSnakeSizeSettingsClick}>Middle</Dropdown.Item>
               <Dropdown.Item href="#/action-3" onClick={handleSnakeSizeSettingsClick}>Big</Dropdown.Item>
             </DropdownButton>
+          </div>
+          <div className="button-wrapper">
+            <Button variant="warning" onClick={handleFullScreenClick}>Full Screen</Button>
           </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect} from 'react';
 import { useInterval } from "../../hooks/useInterval";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { CommonConstants } from "../../constants/constants";
 import './Snake.scss';
 import Footer from '../footer/footer';
@@ -21,6 +22,8 @@ function Snake() {
   const [snakeSoundVolume, setSnakeSoundVolume] = useState(0.5);
   const [isSoundSwitchOn, setSoundIsSwitchOn] = useState(false);
   const [speedForStartGame, setSpeedForStartGame] = useState(CommonConstants.SPEED);
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useLocalStorage('highScore', 0);
 
   const [playSnakeSound] = useSound(
     snakeSound,
@@ -29,8 +32,19 @@ function Snake() {
     }
   );
 
+  useEffect(() => {
+    const context = canvasRef.current.getContext("2d");
+    context.setTransform(scale, 0, 0, scale, 0, 0);
+    context.clearRect(0, 0, gameFieldSize[0], gameFieldSize[1]);
+    context.fillStyle = "lightGreen";
+    snake.forEach(([x,y]) => context.fillRect(x, y, 0.5 ,0.5 ));
+    context.fillStyle = "#ff6000";
+    context.fillRect(apple[0], apple[1], 0.5, 0.5);
+  }, [snake, apple, gameOver]);
+
+  useInterval( () => gameLoop(), speed);
+
   function startGame(): void {
-    console.log(speed);
     setSnake(CommonConstants.SNAKE_START);
     setApple(CommonConstants.APPLE_START);
     setDir([0, -0.5]);
@@ -40,6 +54,7 @@ function Snake() {
   }
 
   function endGame(): void {
+    setScore(0);
     setSpeed(null);
     setGameOver(true);
     setStartGame(false);
@@ -62,7 +77,7 @@ function Snake() {
       while( checkCollision(newApple, newSnake)) {
         newApple = createApple();
       }
-
+      setScore(score+1);
       setApple(newApple);
       return true;
     }
@@ -94,6 +109,9 @@ function Snake() {
       if( checkCollision(newSnakeHead) ) {
         if(isSoundSwitchOn) {
           playSnakeSound();
+        }
+        if (score > highScore) {
+          setHighScore(score);
         }
         endGame();
       }
@@ -130,25 +148,19 @@ function Snake() {
     setSnakeSoundVolume(volume);
   }
 
-  useEffect(() => {
-    const context = canvasRef.current.getContext("2d");
-    context.setTransform(scale, 0, 0, scale, 0, 0);
-    context.clearRect(0, 0, gameFieldSize[0], gameFieldSize[1]);
-    context.fillStyle = "lightGreen";
-    snake.forEach(([x,y]) => context.fillRect(x, y, 0.5 ,0.5 ));
-    context.fillStyle = "#ff6000";
-    context.fillRect(apple[0], apple[1], 0.5, 0.5);
-  }, [snake, apple, gameOver]);
-
-  useInterval( () => gameLoop(), speed);
-
+  function handleFullScreenChange(fullScreen: boolean): void {
+    let snakeDiv: Element = document.getElementsByClassName("snake")[0];
+    snakeDiv.requestFullscreen();
+  }
 
 
   return (
     <div className="snake-wrapper" role="button" onKeyDown={moveSnake}>
-      <Header levelChange={handleLevelChange} sizeChange={handleSizeChange} snakeSizeChange={handleSnakeSizeChange}></Header>
+      <Header levelChange={handleLevelChange} sizeChange={handleSizeChange}
+              isFullScreen={handleFullScreenChange} snakeSizeChange={handleSnakeSizeChange}></Header>
       <SoundSettings isSnakeSoundSwitch={handleSnakeSoundSwitch} snakeSoundVolume={handleSnakeSoundVolume}></SoundSettings>
       <div className="snake">
+        <div className="snake__statistics"> HIGH SCORE: {highScore}, SCORE: {score}</div>
         <canvas className="snake__canvas" ref={canvasRef}
                 width={`${gameFieldSize[0]}px`}
                 height={`${gameFieldSize[1]}px`}/>
