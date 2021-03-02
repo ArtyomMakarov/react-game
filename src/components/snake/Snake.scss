@@ -1,0 +1,63 @@
+.snake-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  display: block;
+  position: relative;
+}
+
+.snake {
+  margin: 0 auto;
+  position: relative;
+
+  &__statistics {
+    max-width: 460px;
+    margin: 0 auto;
+    font-size: 40px;
+    font-weight: 500;
+  }
+
+  &__canvas {
+    border: 5px solid #5c51b6;
+    margin: 0 auto;
+    display: block;
+  }
+
+  &__button {
+    display: block;
+    margin: 50px auto;
+    background: #2F80ED;
+    border: 1px solid;
+    border-radius: 3px;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:hover {
+      background: #0007ed;
+    }
+  }
+
+  &__div {
+    margin: 0 auto;
+    width: 306px;
+    color: red;
+    font-size: 50px;
+    font-weight: bold;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: run 1s  linear;
+  }
+}
+
+@keyframes run {
+  0% {
+    width: 306px;
+    font-size: 4px;
+    text-align: center;
+  }
+}

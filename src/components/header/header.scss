@@ -1,0 +1,36 @@
+.header{
+  display: flex;
+  justify-content: space-around;
+  margin: 50px auto;
+  &__title {
+    min-width: 20%;
+  }
+}
+.snake-settings {
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  flex-wrap: wrap;
+}
+
+.button-wrapper {
+  margin: 5px;
+}
+
+@media all and (max-width: 768px){
+  .header {
+    display: block;
+    margin: 50px auto;
+    &__title {
+      width: 30%;
+      margin: 0 auto;
+    }
+  }
+  .snake-settings {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+}
