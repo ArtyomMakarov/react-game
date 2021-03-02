@@ -11,19 +11,21 @@ import snakeSound from '../../assets/audio/snake.mp3';
 
 function Snake() {
   const canvasRef: {current: any} = useRef();
+
   const [snake, setSnake] = useState(CommonConstants.SNAKE_START);
   const [apple, setApple] = useState(CommonConstants.APPLE_START);
   const [dir, setDir] = useState([0,-0.5]);
-  const [speed, setSpeed] = useState(  CommonConstants.SPEED);
   const [gameOver, setGameOver] = useState(false);
   const [isStartGame, setStartGame] = useState(false);
-  const [gameFieldSize, setGameFieldSize] = useState(CommonConstants.CANVAS_SIZE);
-  const [scale, setScale] = useState(CommonConstants.SCALE);
-  const [snakeSoundVolume, setSnakeSoundVolume] = useState(0.5);
-  const [isSoundSwitchOn, setSoundIsSwitchOn] = useState(false);
-  const [speedForStartGame, setSpeedForStartGame] = useState(CommonConstants.SPEED);
   const [score, setScore] = useState(0);
+  const [snakeSoundVolume, setSnakeSoundVolume] = useState(CommonConstants.SNAKE_SOUND_VOLUME);
+  const [isSoundSwitchOn, setSoundIsSwitchOn] = useState(false);
+
+  const [speed, setSpeed] = useLocalStorage(  'speed', CommonConstants.SPEED);
+  const [gameFieldSize, setGameFieldSize] = useLocalStorage('gameFieldSize', CommonConstants.CANVAS_SIZE);
+  const [scale, setScale] = useLocalStorage('scale', CommonConstants.SCALE);
   const [highScore, setHighScore] = useLocalStorage('highScore', 0);
+  const [speedForStartGame, setSpeedForStartGame] = useLocalStorage('speedForStartGame', CommonConstants.SPEED);
 
   const [playSnakeSound] = useSound(
     snakeSound,

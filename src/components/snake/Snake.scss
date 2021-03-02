@@ -46,8 +46,18 @@
     font-size: 50px;
     font-weight: bold;
     position: absolute;
+    text-align: center;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    animation: run 1s  linear;
+  }
+}
+
+@keyframes run {
+  0% {
+    width: 306px;
+    font-size: 4px;
+    text-align: center;
   }
 }

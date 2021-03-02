@@ -18,4 +18,5 @@ export abstract class CommonConstants {
         68: [0.5, 0],    //right
 
     };
+  public static readonly SNAKE_SOUND_VOLUME: number = 0.5;
 }

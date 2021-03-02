@@ -3,6 +3,7 @@ import './sound-settings.scss';
 import Form from 'react-bootstrap/Form';
 import useSound from 'use-sound';
 import snakeMusic from '../../assets/audio/snakeMusic.mp3';
+import { CommonConstants } from "../../constants/constants";
 
 
 export interface ISoundSettingsProps {
@@ -14,7 +15,7 @@ export default function SoundSettings(props: ISoundSettingsProps) {
 
   const [isMusicSwitchOn, setMusicIsSwitchOn] = useState(false);
   const [isSoundSwitchOn, setSoundIsSwitchOn] = useState(false);
-  const [snakeMusicVolume, setSnakeMusicVolume] = useState(0.5);
+  const [snakeMusicVolume, setSnakeMusicVolume] = useState(CommonConstants.SNAKE_SOUND_VOLUME);
   const [playSnakeMusic, snakeMusicOptions ] = useSound(
     snakeMusic,
     {

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 import './header.scss';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -16,9 +17,9 @@ export interface IHederProps {
 
 export default function Header(props: IHederProps) {
 
-  const [level, setLevel] = useState('');
-  const [scale, setScale] = useState('');
-  const [snakeSize, setSnakeSize] = useState('');
+  const [level, setLevel] = useLocalStorage('level','');
+  const [fieldScale, setFieldScale] = useLocalStorage('fieldScale', '');
+  const [snakeSize, setSnakeSize] = useLocalStorage('snakeSize','');
 
  function handleLevelSettingsClick(e: React.MouseEvent<HTMLElement>): void {
     switch((e.target as HTMLInputElement).textContent) {
@@ -41,17 +42,17 @@ export default function Header(props: IHederProps) {
   function handleScaleSettingsClick(e: React.MouseEvent<HTMLElement>): void {
     switch((e.target as HTMLInputElement).textContent) {
       case 'Small':
-        setScale('Small');
+        setFieldScale('Small');
         props.sizeChange([400, 400]);
         break;
 
       case 'Middle':
-        setScale('Middle');
+        setFieldScale('Middle');
         props.sizeChange([500, 500]);
         break;
 
       default:
-        setScale('Big');
+        setFieldScale('Big');
         props.sizeChange([700, 700]);
     }
   }
@@ -92,7 +93,7 @@ export default function Header(props: IHederProps) {
           </div>
 
           <div className="button-wrapper">
-            <DropdownButton id="dropdown-basic-button" title={scale || "Choose Game Field Size"} variant="secondary">
+            <DropdownButton id="dropdown-basic-button" title={fieldScale || "Choose Game Field Size"} variant="secondary">
               <Dropdown.Item href="#/action-1" onClick={handleScaleSettingsClick}>Small</Dropdown.Item>
               <Dropdown.Item href="#/action-2" onClick={handleScaleSettingsClick}>Middle</Dropdown.Item>
               <Dropdown.Item href="#/action-3" onClick={handleScaleSettingsClick}>Big</Dropdown.Item>
